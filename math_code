@@ -1,0 +1,6 @@
+import math
+
+quiz = 20
+attendance = 10
+recitation = 10
+tests = 60
