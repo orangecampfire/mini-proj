@@ -1,14 +1,15 @@
-class Excel():
+class Excel:
 
     def __init__(self):
         self.quiz_weight = 0.20
         self.attendance_weight = 0.10
         self.recitation_weight = 0.10
         self.tests_weight = 0.60
-        self.quiz_list = [1]
-        self.attendance_list = [1]
-        self.recitation_list = [1]
-        self.tests_list = [1]
+        self.quiz_list = []
+        self.attendance_list = []
+        self.recitation_list = []
+        self.tests_list = []
+        self.test_list = self.get_inputs()
 
     def quiz_avg_function(self):
         sum_quiz = sum(self.quiz_list)
@@ -34,6 +35,20 @@ class Excel():
         total = self.quiz_avg_function() + self.attend_avg_function() + self.recitation_avg_function() + self.test_avg_function()
         return total
 
+    def get_inputs(self):
+        quiz_input = float(input('Enter grade of a single quiz:\n'))
+        test_input = float(input('Enter a grade for a single test:\n'))
+        recitation_input = float(input('Enter the grade for recitations:\n'))
+        attendance_input = float(input('Enter the grade for attendance:\n'))
+
+        self.quiz_list.append(quiz_input)
+        self.tests_list.append(test_input)
+        self.recitation_list.append(recitation_input)
+        self.attendance_list.append(attendance_input)
+
+        #return self.tests_list
+
 
 inputs = Excel()
 total_grade = inputs.compute_total_grade()
+print(f'Total Grade: {total_grade:.10f}')
