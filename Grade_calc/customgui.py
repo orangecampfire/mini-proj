@@ -14,9 +14,13 @@ class App(ctk.CTk):
 		super().__init__(*args, **kwargs)
 		self.excel_instance = math_code.Excel()
 
-		# Sets the title of the window to "App"
+		self.excel_instance.quiz_list.clear()
+		self.excel_instance.tests_list.clear()
+		self.excel_instance.attendance_list.clear()
+		self.excel_instance.recitation_list.clear()
+
+
 		self.title("Grade Calculator") 
-		# Sets the dimensions of the window to 600x700
 		self.geometry(f"{appWidth}x{appHeight}") 
 
 		# Quiz Label
@@ -100,28 +104,32 @@ class App(ctk.CTk):
 		attendance_value = self.attendanceEntry.get()
 		recitation_value = self.recitationEntry.get()
 
-		self.excel_instance.quiz_list.clear()
-		self.excel_instance.tests_list.clear()
-		self.excel_instance.attendance_list.clear()
-		self.excel_instance.recitation_list.clear()
-
 		self.excel_instance.quiz_list.append(float(quiz_value))
 		self.excel_instance.tests_list.append(float(test_value))
 		self.excel_instance.attendance_list.append(float(attendance_value))
 		self.excel_instance.recitation_list.append(float(recitation_value))
+		
 		total_grade = self.excel_instance.compute_total_grade()
-		text = (f"Quiz: {self.excel_instance.quiz_list}\nTest: {self.excel_instance.tests_list}\nAttendance: {self.excel_instance.attendance_list}\nRecitation: {self.excel_instance.recitation_list}\nTotal grade:{total_grade}")
+		text = (f"Quiz: {self.excel_instance.quiz_list}\nTest: {self.excel_instance.tests_list}\nAttendance: {self.excel_instance.attendance_list}\nRecitation: {self.excel_instance.recitation_list}\nTotal grade:{total_grade:.2f}")
 		self.displayBox.insert("0.0", text)
 
+		self.store_data()
 
 
 
+	def store_data(self, filename = "grades.txt"):
+		with open(filename, 'a') as file:
+			file.write(f'{self.excel_instance.quiz_list}')
+			file.write(f'{self.excel_instance.tests_list}')
+			file.write(f'{self.excel_instance.attendance_list}')
+			file.write(f'{self.excel_instance.recitation_list}')
+
+
+	#	def read_data(self, filename = "grades.txt"):
+			
 
 
 if __name__ == "__main__":
 	app = App()
 
-	app.mainloop()	 
-
-#print(math_code.total_grade)
-
+	app.mainloop()
