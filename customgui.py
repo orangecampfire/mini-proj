@@ -7,11 +7,12 @@ ctk.set_default_color_theme("blue")
 
 appWidth, appHeight = 600, 500
 
-class App(ctk.CTk, math_code.Excel):
+class App(ctk.CTk):
 	# The layout of the window will be written
 	# in the init function itself
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
+		self.excel_instance = math_code.Excel()
 
 		# Sets the title of the window to "App"
 		self.title("Grade Calculator") 
@@ -99,11 +100,17 @@ class App(ctk.CTk, math_code.Excel):
 		attendance_value = self.attendanceEntry.get()
 		recitation_value = self.recitationEntry.get()
 
-		self.quiz_list.append(float(quiz_value))
-		self.tests_list.append(float(test_value))
-		self.attendance_list.append(float(attendance_value))
-		self.recitation_list.append(float(recitation_value))	
-		text = f"Quiz: {self.quiz_list}\nTest: {self.test_list}\nAttendance: {self.attendance_list}\nRecitation: {self.recitation_list}"
+		self.excel_instance.quiz_list.clear()
+		self.excel_instance.tests_list.clear()
+		self.excel_instance.attendance_list.clear()
+		self.excel_instance.recitation_list.clear()
+
+		self.excel_instance.quiz_list.append(float(quiz_value))
+		self.excel_instance.tests_list.append(float(test_value))
+		self.excel_instance.attendance_list.append(float(attendance_value))
+		self.excel_instance.recitation_list.append(float(recitation_value))
+		total_grade = self.excel_instance.compute_total_grade()
+		text = (f"Quiz: {self.excel_instance.quiz_list}\nTest: {self.excel_instance.tests_list}\nAttendance: {self.excel_instance.attendance_list}\nRecitation: {self.excel_instance.recitation_list}\nTotal grade:{total_grade}")
 		self.displayBox.insert("0.0", text)
 
 
@@ -113,8 +120,8 @@ class App(ctk.CTk, math_code.Excel):
 
 if __name__ == "__main__":
 	app = App()
-	# Used to run the application
+
 	app.mainloop()	 
 
-print(math_code.total_grade)
+#print(math_code.total_grade)
 
