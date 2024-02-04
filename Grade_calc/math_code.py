@@ -33,7 +33,7 @@ class Excel():
     def compute_total_grade(self):
         total = self.quiz_avg_function() + self.attend_avg_function() + self.recitation_avg_function() + self.test_avg_function()
         return total
-
+    
 
 inputs = Excel()
 total_grade = inputs.compute_total_grade()

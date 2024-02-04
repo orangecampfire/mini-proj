@@ -94,7 +94,7 @@ class App(ctk.CTk):
 							pady=20, sticky="nsew")
           
 
-		  
+	#put the total grade into the text box when clicked
 	def generateResults(self):
 		self.displayBox.delete("0.0", "200.0")
 
@@ -108,25 +108,44 @@ class App(ctk.CTk):
 		self.excel_instance.tests_list.append(float(test_value))
 		self.excel_instance.attendance_list.append(float(attendance_value))
 		self.excel_instance.recitation_list.append(float(recitation_value))
+
 		
 		total_grade = self.excel_instance.compute_total_grade()
 		text = (f"Quiz: {self.excel_instance.quiz_list}\nTest: {self.excel_instance.tests_list}\nAttendance: {self.excel_instance.attendance_list}\nRecitation: {self.excel_instance.recitation_list}\nTotal grade:{total_grade:.2f}")
 		self.displayBox.insert("0.0", text)
 
+
+		self.read_data()
 		self.store_data()
+	
 
 
 
 	def store_data(self, filename = "grades.txt"):
 		with open(filename, 'a') as file:
-			file.write(f'{self.excel_instance.quiz_list}')
-			file.write(f'{self.excel_instance.tests_list}')
-			file.write(f'{self.excel_instance.attendance_list}')
-			file.write(f'{self.excel_instance.recitation_list}')
+			file.write(f'{self.excel_instance.quiz_list}\n')
+			file.write(f'{self.excel_instance.tests_list}\n')
+			file.write(f'{self.excel_instance.attendance_list}\n')
+			file.write(f'{self.excel_instance.recitation_list}\n')
 
 
-	#	def read_data(self, filename = "grades.txt"):
-			
+	def read_data(self, filename = "grades.txt"):
+		try:
+			with open(filename, 'r') as file:
+				lines = file.readlines()
+
+				lines_str = ','.join(map(str, lines))
+				data_lists = [eval(part) for part in str(lines.split(','))]
+
+				self.excel_instance.quiz_list = data_lists[0]
+				self.excel_instance.tests_list = data_lists[1]
+				self.excel_instance.attendance_list = data_lists[2]
+				self.excel_instance.recitation_list = data_lists[3]
+
+				self.generateResults()
+
+		except FileNotFoundError:
+			print("File not found. Creating new lists.")
 
 
 if __name__ == "__main__":
